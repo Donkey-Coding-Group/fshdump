@@ -10,6 +10,6 @@ public interface Formatter {
      * Return the {@link CompiledFormatter} object.
      * @return the object.
      */
-    public CompiledFormatter getCompiledCell();
+    public CompiledFormatter compileFormatter();
 
 }

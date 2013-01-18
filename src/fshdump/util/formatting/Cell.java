@@ -1,7 +1,5 @@
 package fshdump.util.formatting;
 
-import java.util.ArrayList;
-
 /**
  * This class represents a single cell in a table containing formatted
  * and aligned text. A single cell manages the inserted text to ensure
@@ -12,7 +10,7 @@ import java.util.ArrayList;
  *     Cell cell = new Cell("Sample text for a single cell.", 20);
  * }
  */
-public class Cell implements CellInterface {
+public class Cell implements Formatter {
 
     /**
      * The text the cell is formatting.
@@ -76,10 +74,10 @@ public class Cell implements CellInterface {
         this.maxHeight = maxHeight;
     }
 
-    // {CellInterface} Overrides
+    // {Formatter} Overrides
 
     @Override
-    public CompiledCellInterface getCompiledCell() {
+    public CompiledFormatter compileFormatter() {
         String text = this.text;
         if (text == null) text = "";
         return new CompiledCell(text, ellipsis, maxWidth, maxHeight);

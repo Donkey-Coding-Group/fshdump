@@ -3,7 +3,7 @@ package fshdump.util.formatting;
 import java.util.ArrayList;
 import static fshdump.util.formatting.StringUtils.substringBounds;
 
-final class CompiledCell implements CompiledCellInterface {
+final class CompiledCell implements CompiledFormatter {
 
     /**
      * This array contains the wrapped lines.
@@ -174,7 +174,7 @@ final class CompiledCell implements CompiledCellInterface {
         }
     }
 
-    // {CompiledCellInterface} Overrides
+    // {CompiledFormatter} Overrides
 
     @Override
     public int getMaxWidth() {
