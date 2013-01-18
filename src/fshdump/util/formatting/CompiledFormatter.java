@@ -4,7 +4,7 @@ package fshdump.util.formatting;
  * This class defines the interface for a compiled cell. It is used
  * to finally render the formatted text.
  */
-public interface CompiledCellInterface {
+public interface CompiledFormatter {
 
     /**
      * This method returns the maximum number of characters a line
