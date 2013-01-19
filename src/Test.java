@@ -1,23 +1,27 @@
+
+import java.io.*;
+import fshdump.*;
 import fshdump.util.formatting.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: niklas
- * Date: 19.01.13
- * Time: 00:51
- * To change this template use File | Settings | File Templates.
- */
 public class Test {
 
-    public static void main(String[] args) {
-        Column collection = new Column();
-        collection.separator = new SimpleTextSeparator("-", "|");
-        collection.add("Foo Bar Tag Here!", 10);
-        collection.add("And some other shit there...", 15);
+    public static void main(String[] args) throws IOException {
+        String destFile = "C:/Users/niklas/Desktop/desktop.tree";
+        File directory = new File(args[0]);
 
-        CompiledFormatter formatter = collection.compileFormatter();
-        int lines = formatter.getLineCount();
-        for (int i=0; i < lines; i++) {
+        BufferedOutputStream stream = new BufferedOutputStream(System.out);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
+
+        FeedInfo info =  new FeedInfo();
+        DumpWriter dump = new StrictDumpWriter(writer);
+        DataFeed feed = new FileSystemFeed(directory);
+        dump.writeFeed(feed, info);
+
+        Column column = new Column();
+        column.add("" + info.fileCount);
+        column.add("" + info.directoryCount);
+        CompiledFormatter formatter = column.compileFormatter();
+        for (int i=0; i < formatter.getLineCount(); i++) {
             System.out.println(formatter.getLine(i));
         }
     }
