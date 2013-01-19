@@ -28,7 +28,7 @@ public class Cell implements Formatter {
      * The maximum number of lines the cell is allowed to put. A
      * negative value allows the cell to put as many lines as required.
      */
-    public int maxHeight = -1;
+    public int maxLines = -1;
 
     /**
      * This string represents the ellipsis that is inserted when the
@@ -66,12 +66,12 @@ public class Cell implements Formatter {
      * height.
      * @param text The text or null.
      * @param maxWidth The maximum width.
-     * @param maxHeight THe maximum height;
+     * @param maxLines THe maximum height;
      */
-    public Cell(String text, int maxWidth, int maxHeight) {
+    public Cell(String text, int maxWidth, int maxLines) {
         this.text = text;
         this.maxWidth = maxWidth;
-        this.maxHeight = maxHeight;
+        this.maxLines = maxLines;
     }
 
     // {Formatter} Overrides
@@ -80,7 +80,7 @@ public class Cell implements Formatter {
     public CompiledFormatter compileFormatter() {
         String text = this.text;
         if (text == null) text = "";
-        return new CompiledCell(text, ellipsis, maxWidth, maxHeight);
+        return new CompiledCell(text, ellipsis, maxWidth, maxLines);
     }
 
 }

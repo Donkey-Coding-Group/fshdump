@@ -14,7 +14,7 @@ final class CompiledCell implements CompiledFormatter {
      * This value contains the length of the longest string in the
      * {@link #lines} array.
      */
-    private int maxLinesLength;
+    private int cellWidth;
 
     /**
      * The ellipsis being used to replace overflowing text.
@@ -52,7 +52,7 @@ final class CompiledCell implements CompiledFormatter {
         this.maxWidth = maxWidth;
         this.maxLines = maxLines;
         this.lineCount = 0;
-        this.maxLinesLength = 0;
+        this.cellWidth = 0;
         this.lines = new ArrayList<String>();
 
         if (maxWidth == 0) return;
@@ -65,7 +65,7 @@ final class CompiledCell implements CompiledFormatter {
         String currentLine = "";
         for (String word: words) {
             currentLine = pushWord(currentLine, word);
-            if (lineCount >= maxLines) break;
+            if (maxLines >= 0 && lineCount >= maxLines) break;
         }
 
         // Add the last line to the liens of the cell.
@@ -162,15 +162,15 @@ final class CompiledCell implements CompiledFormatter {
 
     /**
      * Adds a line in its final state to the list of lines. Increases
-     * the lineCount respectively and adjusts {@link #maxLinesLength}.
+     * the lineCount respectively and adjusts {@link #cellWidth}.
      */
     private void pushLine(String line) {
         line = line.trim();
         lines.add(line);
         lineCount++;
         int lineLength = line.length();
-        if (lineLength > maxLinesLength) {
-            maxLinesLength = lineLength;
+        if (lineLength > cellWidth) {
+            cellWidth = lineLength;
         }
     }
 
@@ -178,7 +178,7 @@ final class CompiledCell implements CompiledFormatter {
 
     @Override
     public int getMaxWidth() {
-        return maxLinesLength;
+        return cellWidth;
     }
 
     @Override
