@@ -12,8 +12,8 @@ public class Test {
     public static void main(String[] args) {
         Column collection = new Column();
         collection.separator = new SimpleTextSeparator("-", "|");
-        collection.cells.add(new Cell("Foo Bar Tag Here!", 10));
-        collection.cells.add(new Cell("And some other shit there...", 15));
+        collection.add("Foo Bar Tag Here!", 10);
+        collection.add("And some other shit there...", 15);
 
         CompiledFormatter formatter = collection.compileFormatter();
         int lines = formatter.getLineCount();

@@ -57,6 +57,30 @@ abstract public class CellCollection implements Formatter {
     }
 
     /**
+     * Create a new Cell with the specified values and add it to the
+     * end of the cell list.
+     */
+    public void add(String text) {
+        add(new Cell(text));
+    }
+
+    /**
+     * Create a new Cell with the specified values and add it to the
+     * end of the cell list.
+     */
+    public void add(String text, int maxWidth) {
+        add(new Cell(text, maxWidth));
+    }
+
+    /**
+     * Create a new Cell with the specified values and add it to the
+     * end of the cell list.
+     */
+    public void add(String text, int maxWidth, int maxLines) {
+        add(new Cell(text, maxWidth, maxLines));
+    }
+
+    /**
      * @return the CompiledRow object that can be used to render the
      * text from the CellCollection.
      */
