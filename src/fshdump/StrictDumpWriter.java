@@ -3,39 +3,31 @@ package fshdump;
 import java.io.IOException;
 import java.io.Writer;
 
-public class StrictDumpWriter implements DumpWriter {
+/**
+ * This {@link iDumpWriter} implementation writes the strict FSHDump
+ * file format.
+ */
+public class StrictDumpWriter implements iDumpWriter {
 
-
-    public String startTag = "<";
-    public String endTag = ">";
-    public String separator = ";";
-    public Writer writer = null;
-
-    public StrictDumpWriter(Writer writer){
-        this.writer = writer;
-    }
-
-    // {DumpWriter} Overrides
+    // iDumpWriter -- Overrides
 
     @Override
-    public void writeFeed(DataFeed feed, FeedInfo info) throws IOException {
-        boolean ownsContent = feed.ownsContent();
-        writer.write(feed.getData());
-        if (ownsContent) {
-            info.directoryCount++;
-            writer.write(startTag);
+    public void writeFeed(DumpOptions options, DumpResult result,
+                          Writer writer, iHierarchyFeed feed)
+            throws IOException {
+        writer.write(options.escapeData(feed.getData()));
+        iHierarchyFeed[] childFeeds = feed.getChildFeeds();
+        if (childFeeds == null) {
+            result.endFeeds++;
+            writer.write(options.separator);
         }
         else {
-            info.fileCount++;
-            writer.write(separator);
-        }
-
-        if (ownsContent) {
-            DataFeed[] subFeeds = feed.listContent();
-            for (DataFeed subFeed: subFeeds) {
-                writeFeed(subFeed, info);
+            result.folderFeeds++;
+            writer.write(options.startTag);
+            for (iHierarchyFeed child: childFeeds) {
+                writeFeed(options, result, writer, child);
             }
-            writer.write(endTag);
+            writer.write(options.endTag);
         }
     }
 

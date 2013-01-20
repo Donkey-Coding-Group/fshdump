@@ -1,38 +1,63 @@
 package fshdump;
 
-import java.io.*;
+import java.io.File;
 
-public class FileSystemFeed implements DataFeed {
+/**
+ * This class implements the {@link iHierarchyFeed} interface providing
+ * data from the local file-system.
+ */
+public class FileSystemFeed implements iHierarchyFeed {
 
-    File file;
+    /**
+     * Internal {@link File} object.
+     */
+    public File fileObject;
 
-    public FileSystemFeed(File file) {
-        this.file = file;
+    /**
+     * Construct a new {@link FileSystemFeed} from a filename.
+     * @param fileName The file/directory name.
+     */
+    public FileSystemFeed(String fileName) {
+        fileObject = new File(fileName);
     }
 
-    // {DataFeed} Overrides
-
-    @Override
-    public boolean ownsContent() {
-        return file.isDirectory();
+    /**
+     * Construct a new {@link FileSystemFeed} from a {@link File}
+     * object.
+     * @param fileObject The {@link File} object.
+     */
+    public FileSystemFeed(File fileObject) {
+        this.fileObject = fileObject;
     }
 
-    @Override
-    public FileSystemFeed[] listContent() {
-        File[] subFiles = file.listFiles();
-        if (subFiles == null) {
-            return new FileSystemFeed[0];
-        }
-        FileSystemFeed[] feeds = new FileSystemFeed[subFiles.length];
-        for (int i=0; i < subFiles.length; i++) {
-            feeds[i] = new FileSystemFeed(subFiles[i]);
-        }
-        return feeds;
-    }
+    // iHierarchyFeed -- Overrides
 
     @Override
     public String getData() {
-        return file.getName();
+        return fileObject.getName();
+    }
+
+    @Override
+    public iHierarchyFeed[] getChildFeeds() {
+        // Return null when this object represents a file
+        // on the file system.
+        if (!fileObject.isDirectory()) {
+            return null;
+        }
+
+        // List up the directory.
+        File[] files = fileObject.listFiles();
+        if (files == null) {
+            return new iHierarchyFeed[0];
+        }
+
+        // Create the array of feeds.
+        iHierarchyFeed[] feeds = new iHierarchyFeed[files.length];
+        for (int i=0; i < files.length; i++) {
+            feeds[i] = new FileSystemFeed(files[i]);
+        }
+
+        return feeds;
     }
 
 }
