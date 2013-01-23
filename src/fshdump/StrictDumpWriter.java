@@ -15,7 +15,12 @@ public class StrictDumpWriter implements iDumpWriter {
     public void writeFeed(DumpOptions options, DumpResult result,
                           Writer writer, iHierarchyFeed feed)
             throws IOException {
-        writer.write(options.escapeData(feed.getData()));
+        String data = feed.getData();
+        if (data.isEmpty() && !options.allowEmptyData) {
+            return;
+        }
+
+        writer.write(options.escapeData(data));
         iHierarchyFeed[] childFeeds = feed.getChildFeeds();
         if (childFeeds == null) {
             result.endFeeds++;

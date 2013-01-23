@@ -6,14 +6,12 @@ package fshdump;
  */
 final public class DumpOptions {
 
-    public char startTag;
-    public char endTag;
-    public char separator;
+    public char startTag = '<';
+    public char endTag = '>';
+    public char separator = ';';
+    public boolean allowEmptyData = false;
 
     public DumpOptions() {
-        startTag = '<';
-        endTag = '>';
-        separator = ';';
     }
 
     public DumpOptions(char startTag, char endTag, char separator) {

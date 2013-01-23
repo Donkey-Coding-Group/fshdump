@@ -1,7 +1,8 @@
 package fshdump;
 
 /**
- * This class stores values being modified by an {@link iDumpWriter}.
+ * This class stores values being modified by an {@link iDumpWriter}
+ * or an {@link iDumpParser}.
  */
 final public class DumpResult {
 

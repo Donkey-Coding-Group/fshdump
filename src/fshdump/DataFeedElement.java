@@ -24,10 +24,12 @@ public class DataFeedElement implements iHierarchyFeed {
     }
 
     public void add(DataFeedElement element) {
+        assert element != null;
         childFeeds.add(element);
     }
 
     public void add(int index, DataFeedElement element) {
+        assert element != null;
         childFeeds.add(index, element);
     }
 

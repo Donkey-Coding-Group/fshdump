@@ -1,46 +1,58 @@
 import fshdump.*;
+import fshdump.exc.ParseError;
 
 import java.io.*;
 import static java.lang.System.*;
 
 public class ParserTest {
 
-    public static void main(String[] args) throws IOException, DamagedFileException {
+    public static void main(String[] args) throws IOException, ParseError {
         DumpResult dumpResult = new DumpResult();
-        DumpOptions dumpOptions = new DumpOptions();
-        StrictDumpParser dumpParser = new StrictDumpParser();
+        DumpParser dumpParser = new DumpParser(new DumpOptions(), true);
         StrictDumpWriter dumpWriter = new StrictDumpWriter();
 
-        String inputData = "Hello<Fo\\<ba\\>bo;Baz;Bat;Bo\\;oz<Fuck;yeAh!;>>";
+        // The data contains unnamed elements. The output is expected to differ
+        // from the input.
+        String inputData =
+                "Hello<\n" +
+                "   Fo\\<ba\\>bo;\n" +
+                "   Baz;\n" +
+                "   Bat;\n" +
+                "   Bo\\;oz<\n" +
+                "       Fuck;\n" +
+                "       yeAh!;\n" +
+                "   >\n" +
+                "   Baha;\n" +
+                "   ;\n" +
+                "   Cool<\n" +
+                "       Stuff;\n" +
+                "       Sub<\n" +
+                "           Buh;\n" +
+                "       >\n" +
+                "   >\n" +
+                ">  ";
         String outputData = null;
 
         StringWriter outputWriter = new StringWriter();
         Writer outWriter = new PrintWriter(out);
 
         // Parse the input dump.
-        DataFeedElement[] e = dumpParser.parseDump(new StringReader(inputData), dumpOptions);
+        DataFeedElement[] e = dumpParser.parseDump(new StringReader(inputData), dumpResult);
         out.printf("Parsed %d top-level element(s).\n", e.length);
-        if (e.length == 0) {
+        if (e.length != 1) {
             out.printf("Error, input actually has 1 top-level element.\n");
             return;
         }
+
+        dumpWriter.writeFeed(new DumpOptions(), dumpResult, outputWriter, e[0]);
+        outputData = outputWriter.getBuffer().toString();
+        out.println("Input Data:\n" + inputData);
+
         e[0].formatNice(outWriter, 0);
-        out.println("Parsed Tree:");
+        out.println("Resulting (parsed) tree:");
         outWriter.flush();
 
-        out.println("Writing new dump from parsed elements..");
-        dumpWriter.writeFeed(dumpOptions, dumpResult, outputWriter, e[0]);
-        outputData = outputWriter.getBuffer().toString();
-        out.println("Comparing..");
-        if (outputData.equals(inputData)) {
-            out.println("Input and Output data are equal.");
-        }
-        else {
-            out.println("ERROR: Input and Output data are not equal!!");
-            out.println(inputData);
-            out.println(outputData);
-        }
-
+        out.println("Re-dumped Data:\n   " + outputData);
     }
 
 }

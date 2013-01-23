@@ -1,5 +1,6 @@
 package fshdump.util;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -8,7 +9,9 @@ import java.io.StringReader;
  * This class implements scanning an input source character by
  * character, making it more easy to do parsing operations.
  */
-public class Scanner {
+public class Scanner implements Closeable {
+
+    public static final String WHITESPACE = "\t\n\r\b ";
 
     private Cursor cursor = new Cursor();
     private Reader reader = null;
@@ -96,6 +99,16 @@ public class Scanner {
             reader.reset();
             return null;
         }
+    }
+
+    // {Closeable} Overrides
+
+    @Override
+    public void close() throws IOException {
+        if (callClose) {
+            reader.close();
+        }
+        reader = null;
     }
 
 }
