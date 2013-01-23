@@ -38,6 +38,11 @@ public class FileSystemFeed implements iHierarchyFeed {
     }
 
     @Override
+    public boolean canHaveChildren() {
+        return fileObject.isDirectory();
+    }
+
+    @Override
     public iHierarchyFeed[] getChildFeeds() {
         // Return null when this object represents a file
         // on the file system.

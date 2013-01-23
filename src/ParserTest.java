@@ -53,6 +53,12 @@ public class ParserTest {
         outWriter.flush();
 
         out.println("Re-dumped Data:\n   " + outputData);
+
+        FeedView view = new FeedView();
+        view.setFeed(e[0]);
+        view.setVisible(true);
+        view.setSize(400, 230);
+        view.setDefaultCloseOperation(FeedView.EXIT_ON_CLOSE);
     }
 
 }

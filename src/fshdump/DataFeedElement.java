@@ -68,6 +68,11 @@ public class DataFeedElement implements iHierarchyFeed {
     }
 
     @Override
+    public boolean canHaveChildren() {
+        return childFeeds != null;
+    }
+
+    @Override
     public DataFeedElement[] getChildFeeds() {
         if (childFeeds != null) {
             return childFeeds.toArray(new DataFeedElement[0]);

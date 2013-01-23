@@ -14,6 +14,13 @@ public interface iHierarchyFeed {
     public String getData();
 
     /**
+     * Return true when {@link #getChildFeeds()} does not return null.
+     * @return <code>true</code> when the feed is able to have children,
+     * <code>false</code> if not.
+     */
+    public boolean canHaveChildren();
+
+    /**
      * Return an array of child elements for the hierarchy node.
      * @return An array of {@link iHierarchyFeed} objects or null
      * if the node does not have sub-elements (eg. files in a
