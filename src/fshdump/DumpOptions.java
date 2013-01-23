@@ -6,27 +6,27 @@ package fshdump;
  */
 final public class DumpOptions {
 
-    public String startTag;
-    public String endTag;
-    public String separator;
+    public char startTag;
+    public char endTag;
+    public char separator;
 
     public DumpOptions() {
-        startTag = "<";
-        endTag = ">";
-        separator = ";";
+        startTag = '<';
+        endTag = '>';
+        separator = ';';
     }
 
-    public DumpOptions(String startTag, String endTag,
-                       String separator) {
+    public DumpOptions(char startTag, char endTag, char separator) {
         this.startTag = startTag;
         this.endTag = endTag;
         this.separator = separator;
     }
 
     public String escapeData(String data) {
-        data = data.replace(startTag, "\\" + startTag)
-                   .replace(endTag, "\\" + endTag)
-                   .replace(separator, "\\" + separator);
+        data = data.replace("\\", "\\\\")
+                   .replace(Character.toString(startTag), "\\" + startTag)
+                   .replace(Character.toString(endTag), "\\" + endTag)
+                   .replace(Character.toString(separator), "\\" + separator);
         return data;
     }
 
